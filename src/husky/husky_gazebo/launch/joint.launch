@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+
+<launch>
+
+  <!-- <arg name="multimaster" default="false"/> -->
+
+  <arg name="robot_name" default="joint"/>
+
+  <arg name="x" default="-6.0"/>
+  <arg name="y" default="6.0"/>
+  <arg name="z" default="1.25"/>
+  <arg name="yaw" default="-0.7835"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="row" default="1.5708"/>
+
+  <!-- Optionally disable teleop control -->
+  <arg name="joystick" default="true" />
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find rigid)/urdf/rigid.urdf.xacro'" />
+  <node name="spawn_rigid_model" pkg="gazebo_ros" type="spawn_model"
+      args="-x $(arg x)
+            -y $(arg y)
+            -z $(arg z)
+            -Y $(arg yaw)
+            -R $(arg row)
+            -P $(arg pitch)
+            -unpause
+            -urdf
+            -param robot_description
+            -model $(arg robot_name)" />
+            
+            
+
+
+<!--
+<launch>
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-file $(find rigid)/urdf/rigid.urdf.xacro -urdf -model rigid -x -6.0 -y 6.0 -z 1.25 -R 1.5708 -P 0.0 -Y -0.7835"
+    output="screen" />
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+-->
+</launch>
+

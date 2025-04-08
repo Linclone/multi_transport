@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+Software License Agreement (BSD)
+
+\file      gazebo_description.launch
+\authors   Paul Bovbel <pbovbel@clearpathrobotics.com
+\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Clearpath Robotics nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<launch>
+
+  <!-- <arg name="multimaster" default="false"/> -->
+
+  <arg name="robot_name" default="rigid"/>
+
+  <arg name="x" default="-6.0"/>
+  <arg name="y" default="6.0"/>
+  <arg name="z" default="1.25"/>
+  <arg name="yaw" default="-0.7835"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="row" default="1.5708"/>
+
+  <!-- Optionally disable teleop control -->
+  <arg name="joystick" default="true" />
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find rigid)/urdf/rigid.urdf.xacro'" />
+  <node name="spawn_rigid_model" pkg="gazebo_ros" type="spawn_model"
+      args="-x $(arg x)
+            -y $(arg y)
+            -z $(arg z)
+            -Y $(arg yaw)
+            -R $(arg row)
+            -P $(arg pitch)
+            -unpause
+            -urdf
+            -param robot_description
+            -model $(arg robot_name)" />
+            
+            
+
+
+<!--
+<launch>
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-file $(find rigid)/urdf/rigid.urdf.xacro -urdf -model rigid -x -6.0 -y 6.0 -z 1.25 -R 1.5708 -P 0.0 -Y -0.7835"
+    output="screen" />
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+-->
+</launch>
+
